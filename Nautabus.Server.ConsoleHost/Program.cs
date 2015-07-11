@@ -17,6 +17,7 @@ namespace Nautabus.Server.ConsoleHost
             // Start OWIN host 
             using (WebApp.Start<Startup>(url: baseAddress))
             {
+                Console.WriteLine("Server running on {0}", baseAddress);
                 // Create HttpCient and make a request to api/values 
                 HttpClient client = new HttpClient();
 
