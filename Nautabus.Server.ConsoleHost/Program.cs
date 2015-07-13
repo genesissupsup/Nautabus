@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
 
 namespace Nautabus.Server.ConsoleHost
@@ -12,6 +8,11 @@ namespace Nautabus.Server.ConsoleHost
     {
         static void Main(string[] args)
         {
+            //sets the data directory to the same folder where the exe lives - needed to attach user instance database files
+            AppDomain.CurrentDomain.SetData("DataDirectory", AppDomain.CurrentDomain.BaseDirectory);
+
+            
+
             string baseAddress = "http://localhost:9000/";
 
             // Start OWIN host 

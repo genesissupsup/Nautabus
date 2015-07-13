@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nautabus.Client.ConsoleListener
 {
@@ -82,7 +75,6 @@ namespace Nautabus.Client.ConsoleListener
             MessageName = info.GetString("MessageName");
             MessageContent = info.GetString("MessageContent");
         }
-
         public int Id { get; set; }
         public string MessageName { get; set; }
         public string MessageContent { get; set; }

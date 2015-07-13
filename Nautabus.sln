@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nautabus", "Nautabus", "{02
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Clients", "Sample Clients", "{541D7E52-89F9-4EFE-8E5C-98E94CC30247}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nautabus.Domain", "Nautabus.Domain\Nautabus.Domain.csproj", "{E067CFCB-6586-417E-AB63-44F5EF587935}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{D7E3FE51-7B90-48ED-83CE-D2A0F7FD19E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7E3FE51-7B90-48ED-83CE-D2A0F7FD19E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7E3FE51-7B90-48ED-83CE-D2A0F7FD19E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E067CFCB-6586-417E-AB63-44F5EF587935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E067CFCB-6586-417E-AB63-44F5EF587935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E067CFCB-6586-417E-AB63-44F5EF587935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E067CFCB-6586-417E-AB63-44F5EF587935}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,5 +66,6 @@ Global
 		{424C68D8-7622-4DF2-A31F-7B0C1FD31FF8} = {A10A479D-63DD-4723-B8F8-CCEBC21C8ECF}
 		{862F48D3-B568-4B2E-9AC6-01CFB4316D97} = {541D7E52-89F9-4EFE-8E5C-98E94CC30247}
 		{D7E3FE51-7B90-48ED-83CE-D2A0F7FD19E5} = {02B09BF5-8AD6-4CB6-801F-1EA036F57D3E}
+		{E067CFCB-6586-417E-AB63-44F5EF587935} = {02B09BF5-8AD6-4CB6-801F-1EA036F57D3E}
 	EndGlobalSection
 EndGlobal

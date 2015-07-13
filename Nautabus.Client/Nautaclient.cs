@@ -10,19 +10,17 @@ namespace Nautabus.Client
 {
     public class Nautaclient
     {
-
-        public string HostUrl { get;  }
+        public string HostUrl { get; }
         private static IHubProxy Nautaproxy { get; set; }
         public bool IsConnected { get; set; }
 
-        private JsonSerializerSettings JsonSettings { get; } =
+        private JsonSerializerSettings JsonSettings
+        { get; }
+        =
             new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
-        
-        
-       
 
         public Nautaclient(string nameOrConnectionString)
         {
@@ -31,38 +29,25 @@ namespace Nautabus.Client
             {
                 nameOrConnectionString = cstring.ConnectionString;
             }
-
-            var parts = nameOrConnectionString
-                .Split(';')
-                .Select(p => p.Split('='))
-                .Select(t => new { key = t[0], value = t[1] }).ToList();
-
-            var host = parts.FirstOrDefault(p => p.key.Equals("hostUrl"));
-            if (host == null)
+            try
             {
-                throw new TypeInitializationException(this.GetType().FullName, new ArgumentNullException(nameof(nameOrConnectionString)));
+                var parts = nameOrConnectionString
+                    .Split(';')
+                    .Select(p => p.Split('='))
+                    .Select(t => new { key = t[0], value = t[1] }).ToList();
+
+                var host = parts.FirstOrDefault(p => p.key.Equals("hostUrl"));
+                if (host == null)
+                {
+                    throw new TypeInitializationException(GetType().FullName, new ArgumentNullException(nameof(nameOrConnectionString), "nameOrConnectionString does not contain a valid hostUrl parameter"));
+                }
+
+                HostUrl = host.value;
             }
-
-            HostUrl = host.value;
-
-            //foreach (var nvp in parts)
-            //{
-            //    foreach (var pair in nvp)
-            //    {
-            //        var p = nvp.Split('=');
-            //        pairs.Add(new KeyValuePair<string, string>(p[0], p[1]));
-            //    }
-            //}
-            //if (pairs.Any(p => p.Key.Equals("hostUrl")))
-            //{
-            //    HostUrl = pairs.First(p => p.Key == "hostUrl").Value;
-            //}
-            //else
-            //{
-            //    throw new TypeInitializationException(this.GetType().FullName,
-            //        new ArgumentNullException(nameof(nameOrConnectionString)));
-            //}
-
+            catch (Exception)
+            {
+                throw new TypeInitializationException(GetType().FullName, new FormatException("The 'nameOrConnectionString' parameter is invalid or malformed."));
+            }
         }
 
         public async Task ConnectAsync()
@@ -83,7 +68,7 @@ namespace Nautabus.Client
             await Nautaproxy.Invoke("Publish", topic, jsonValue);
         }
 
-      
+
 
         public async Task<IDisposable> SubscribeAsync<T>(string topic, string subscription, Action<T> callbackAction)
         {
