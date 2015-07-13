@@ -12,18 +12,32 @@ namespace Nautabus.Client.ConsoleListener
         static void Main(string[] args)
         {
             //Directly talking to server via Nautaclient library
-            subscriberId = args.Any() ? args[0] : Guid.NewGuid().ToString();
-            DirectTestNautaclient();
-            IntermediaryTest();
+            subscriberId = args.Any() ? args[0] : promptForSubscriptionName();
+            Console.WriteLine("Subscribing as "+ subscriberId);
+            Console.WriteLine("sending test message");
+
+            //uncomment to test conneting directly with nautaclient api
+            //DirectTestNautaclient();
+
+            //uncomment to test connecting via an IServiceBus instance instead
+            CommonInterfaceTest();
+            Console.WriteLine();
+            Console.WriteLine("listening, press any key to exit...");
             Console.ReadLine();
         }
 
-        static void IntermediaryTest()
+        static string promptForSubscriptionName()
         {
-            var testMessage = new SampleMessage { Id = 55, MessageName = "test", MessageContent = "this is a test message of Sample message type from client" };
+            Console.WriteLine("Please enter a subscription name for this listener");
+            return Console.ReadLine();
+        }
+
+        static void CommonInterfaceTest()
+        {
+            var testMessage = new SampleMessage { Id = new Random().Next(0, 1000), MessageName = "test", MessageContent = "message from client Interface based listener " + subscriberId};
 
             var nbus = new NautabusServiceBus();
-            nbus.SubscribeAsync(topicA, subscriberId + "intermediary", GetTypedMessageCallbackAction()).Wait();
+            nbus.SubscribeAsync(topicA, subscriberId, GetTypedMessageCallbackAction()).Wait();
             //this interface requires the object be ISerializable, and ironically enough, System.String isn't ISerializable
             //nbus.SubscribeAsync(topicB, subscriberId, GetSimpleStringCallbackAction()).Wait();
             nbus.PublishAsync(topicA, testMessage).Wait();
@@ -32,12 +46,13 @@ namespace Nautabus.Client.ConsoleListener
         static void DirectTestNautaclient()
         {
            
-            var testMessage = new SampleMessage { Id = 55, MessageName = "test", MessageContent = "this is a test message of Sample message type from client" };
+            var testMessage = new SampleMessage { Id = new Random().Next(0,1000), MessageName = "test", MessageContent = "message from client listener " + subscriberId };
             var client = new Nautaclient("Nautaconnection");
             client.ConnectAsync().Wait();
             client.SubscribeAsync(topicA, subscriberId, GetTypedMessageCallbackAction()).Wait();
             client.SubscribeAsync(topicB, subscriberId, GetSimpleStringCallbackAction()).Wait();
 
+            //send one message to the topic
             client.PublishAsync(topicA, testMessage).Wait();
             
         }

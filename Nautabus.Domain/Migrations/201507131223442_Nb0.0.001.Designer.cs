@@ -13,7 +13,7 @@ namespace Nautabus.Domain.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201507130458413_Nb0.0.001"; }
+            get { return "201507131223442_Nb0.0.001"; }
         }
         
         string IMigrationMetadata.Source

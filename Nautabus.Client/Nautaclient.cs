@@ -77,15 +77,13 @@ namespace Nautabus.Client
                 await ConnectAsync();
             }
             await Nautaproxy.Invoke("Subscribe", topic, subscription);
-            return Nautaproxy.On<string>(topic, msg =>
-            {
+            return Nautaproxy.On<int, string>(topic, async (id, content) =>
+             {
                 //NOTE! When T is dynamic, camelCase will not be mapped to PascalCase
-                var obj = JsonConvert.DeserializeObject<T>(msg, JsonSettings);
-                callbackAction(obj);
-            });
-
-
+                var obj = JsonConvert.DeserializeObject<T>(content, JsonSettings);
+                 callbackAction(obj);
+                 await Nautaproxy.Invoke("AcknowledgeMessage", id, subscription);
+             });
         }
-
     }
 }

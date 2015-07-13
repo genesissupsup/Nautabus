@@ -29,6 +29,17 @@ namespace Nautabus.Domain.Migrations
                 .PrimaryKey(t => t.Name);
             
             CreateTable(
+                "dbo.TopicSubscriptions",
+                c => new
+                    {
+                        TopicName = c.String(nullable: false, maxLength: 100),
+                        SubscriptionName = c.String(nullable: false, maxLength: 100),
+                    })
+                .PrimaryKey(t => new { t.TopicName, t.SubscriptionName })
+                .ForeignKey("dbo.Topics", t => t.TopicName)
+                .Index(t => t.TopicName);
+            
+            CreateTable(
                 "dbo.SubscriptionMessages",
                 c => new
                     {
@@ -42,15 +53,6 @@ namespace Nautabus.Domain.Migrations
                 .Index(t => t.MessageId)
                 .Index(t => new { t.TopicName, t.SubscriptionName });
             
-            CreateTable(
-                "dbo.TopicSubscriptions",
-                c => new
-                    {
-                        TopicName = c.String(nullable: false, maxLength: 100),
-                        SubscriptionName = c.String(nullable: false, maxLength: 100),
-                    })
-                .PrimaryKey(t => new { t.TopicName, t.SubscriptionName });
-            
         }
         
         public override void Down()
@@ -58,11 +60,13 @@ namespace Nautabus.Domain.Migrations
             DropForeignKey("dbo.SubscriptionMessages", new[] { "TopicName", "SubscriptionName" }, "dbo.TopicSubscriptions");
             DropForeignKey("dbo.SubscriptionMessages", "MessageId", "dbo.Messages");
             DropForeignKey("dbo.Messages", "TopicName", "dbo.Topics");
+            DropForeignKey("dbo.TopicSubscriptions", "TopicName", "dbo.Topics");
             DropIndex("dbo.SubscriptionMessages", new[] { "TopicName", "SubscriptionName" });
             DropIndex("dbo.SubscriptionMessages", new[] { "MessageId" });
+            DropIndex("dbo.TopicSubscriptions", new[] { "TopicName" });
             DropIndex("dbo.Messages", new[] { "TopicName" });
-            DropTable("dbo.TopicSubscriptions");
             DropTable("dbo.SubscriptionMessages");
+            DropTable("dbo.TopicSubscriptions");
             DropTable("dbo.Topics");
             DropTable("dbo.Messages");
         }

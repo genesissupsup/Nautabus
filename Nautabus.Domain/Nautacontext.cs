@@ -14,6 +14,14 @@ namespace Nautabus.Domain
 
         public Nautacontext(string nameOrConnectionString) : base(nameOrConnectionString) { }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Topic>().HasMany(o => o.TopicSubscriptions)
+                .WithRequired(o => o.Topic)
+                .WillCascadeOnDelete(false);
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Message> Messages { get; set; }
 
         public DbSet<Topic> Topics { get; set; }

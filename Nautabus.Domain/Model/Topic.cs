@@ -13,5 +13,8 @@ namespace Nautabus.Domain.Model
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
+
+
+        public ICollection<TopicSubscription> TopicSubscriptions { get; set; } 
     }
 }
