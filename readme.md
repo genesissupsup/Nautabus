@@ -34,7 +34,7 @@ This project is very new, and has not reached a release milestone yet. Currently
 it has working end-to-end pub/sub capabilities and a basic EF managed database.
 
 The current focus is on server mechanisms to enhance the reliability of message 
-delivery, and features to ensure that both Nautabus server can be scaled 
+delivery, and features to ensure that Nautabus server can be scaled 
 horizontally to multiple instances.
 
 ## Components
@@ -57,6 +57,33 @@ The Nautabus Client is a .Net class library that provides a thin set of abstract
 for interacting with Nautabus Server. If you prefer, you can skip the Nautabus client 
 and directly reference the standard SignalR client libraries instead. You can also 
 leverage the standard SignalR JavaScript proxies too
+
+## Developer Notes:
+
+#### Delivery and Acknowledgement
+When the client library receives a message, it will send an acknowledgment back to 
+the server immediately, before it calls your message handler. 
+
+Once delivered, it is the client's responsibility to make sure that the message is 
+processes successfully. If there is a failure during processing, the client should 
+handle and/or retry the operation internally.
+
+#### Duplicate Delivery
+It is possible that a client could receive more than one instance of the same message. 
+While this should be an extreme rare case. The client would ideally make sure that 
+operations performed against a message are [idempotent](http://stackoverflow.com/a/1077421/10115). 
+
+When idempotence isn't an option, the client should track the messages IDs it has already 
+processed and ignore any duplicates. The client wouldn't need to track IDs over a 
+long period of time --typically, just tracking IDs in memory while the client is 
+running is sufficient.
+
+#### Delivery Order 
+Messages are not guaranteed to arrive at a client in the same order in which they were 
+published -such is the nature of a async system. Nautabus does not include features for 
+enforcing messages sequences or sub-grouping related messages within a topic. You 
+can include sequence or group information within the messages, but it is up to the 
+clients to understand and react to that information accordingly.
 
 ## Due Credit
 
