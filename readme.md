@@ -7,7 +7,7 @@ infrastructural complexities, management overhead, and price associated with mos
 traditional options like NServiceBus or Azure Service Bus. You just want a little
 bus. 
 
-Nautabus is a light-weight, hostable server that provides durable messaging sharing 
+Nautabus is a light-weight, hostable server that provides durable messaging
 services between multiple client applications. It implements the Publish-Subscribe 
 architectural design pattern over RESTful APIs and WebSockets using ASP.NET Web API 
 and SignalR. 
@@ -80,8 +80,8 @@ running is sufficient.
 
 #### Delivery Order 
 Messages are not guaranteed to arrive at a client in the same order in which they were 
-published -such is the nature of a async system. Nautabus does not include features for 
-enforcing messages sequences or sub-grouping related messages within a topic. You 
+published -such is the nature of an async system. Nautabus does not include features for 
+enforcing message sequences or sub-grouping related messages within a topic. You 
 can include sequence or group information within the messages, but it is up to the 
 clients to understand and react to that information accordingly.
 
